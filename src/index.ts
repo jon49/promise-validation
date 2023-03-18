@@ -26,6 +26,9 @@ type Unwrap<T> =
 	T
 
 export async function validateObject<T extends { [Key in keyof T]: (value: any | undefined) => Promise<any> }>(original: any, validator: T) {
+    if (!original) {
+        return Promise.reject(new AggregateError([new Error("Object is undefined.")], "Validation Errors"))
+    }
     let validatorKeys = Object.keys(validator)
     let validations = new Array(validatorKeys.length)
     let i = 0

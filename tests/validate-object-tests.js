@@ -56,5 +56,16 @@ o.spec("validateObject", () => {
         // Assert
         o(result.additionalProperty).equals(undefined)
     })
+
+    o("null value returns error", async () => {
+        // Arrange
+        const value = null
+
+        // Act
+        const result = await validateObject(value, personValidator).catch(x => x)
+
+        // Assert
+        o(result.errors[0].message).equals("Object is undefined.")
+    })
 })
 
