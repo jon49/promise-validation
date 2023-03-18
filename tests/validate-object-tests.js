@@ -31,7 +31,7 @@ o.spec("validateObject", () => {
         const value = {
             firstName: "Jay",
             id: 1,
-            lastName: "Burns"
+            lastName: "Burns",
         }
 
         // Act
@@ -40,6 +40,21 @@ o.spec("validateObject", () => {
         // Assert
         o(result).deepEquals({ firstName: "Jay", id: 1, lastName: "Burns" })
     })
-})
 
+    o("removes any extra properties", async () => {
+        // Arrange
+        const value = {
+            firstName: "Jay",
+            id: 1,
+            lastName: "Burns",
+            additionalProperty: "whatever"
+        }
+
+        // Act
+        const result = await validateObject(value, personValidator)
+
+        // Assert
+        o(result.additionalProperty).equals(undefined)
+    })
+})
 
