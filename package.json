@@ -1,0 +1,32 @@
+{
+  "name": "promise-validation",
+  "version": "1.0.0",
+  "description": "Validation using async await for simplicity",
+  "main": "index.js",
+  "scripts": {
+    "test": "tsc --module commonjs --outDir temp && ospec && rm -rf ./temp",
+    "start": "tsc --declaration"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jon49/promise-validation.git"
+  },
+  "keywords": [
+    "validation",
+    "promise",
+    "async",
+    "await",
+    "validator",
+    "simple"
+  ],
+  "author": "Jon Nyman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jon49/promise-validation/issues"
+  },
+  "homepage": "https://github.com/jon49/promise-validation#readme",
+  "devDependencies": {
+    "ospec": "^4.2.0",
+    "typescript": "^5.0.2"
+  }
+}
