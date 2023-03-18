@@ -17,7 +17,14 @@
     "async",
     "await",
     "validator",
-    "simple"
+    "simple",
+    "functional",
+    "compose",
+    "composable",
+    "functional-programming",
+    "declarative",
+    "value-objects",
+    "domain-driven-design"
   ],
   "author": "Jon Nyman",
   "license": "ISC",
