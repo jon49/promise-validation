@@ -45,6 +45,9 @@ const rawData = {
     birthdate: "1967-09-09"
 }
 
+// No need to check anything about the person as you know it is a person and
+// that person is there and the data just like you said it would be in the
+// validator.
 const person = await validateObject(rawData, personValidator)
 
 console.log(person)
@@ -77,10 +80,13 @@ AggregateError:
     errors:
         [
             ValidationError:
+                name: "firstName"
                 message: "'firstName' is undefined but is required."
             ValidationError:
+                name: "lastName"
                 message: "'lastName' is longer than 25."
             ValidationError:
+                name: "birthdate"
                 message: "'birthdate' is an invalid date."
 
         ]
