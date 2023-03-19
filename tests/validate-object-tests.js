@@ -3,9 +3,9 @@ const { validateObject } = require('../temp/index.js')
 const { maybe, createString5, createIdNumber } = require('./object-validators.js')
 
 const personValidator = {
-    firstName: createString5("firstName"),
-    id: createIdNumber("id"),
-    lastName: maybe(createString5("lastName"))
+    firstName: createString5("First Name"),
+    id: createIdNumber("ID"),
+    lastName: maybe(createString5("Last Name"))
 }
 
 o.spec("validateObject", () => {
@@ -18,12 +18,16 @@ o.spec("validateObject", () => {
         }
 
         // Act
-        const results = await validateObject(value, personValidator).catch(x => x)
+        const results =
+            await validateObject(value, personValidator)
+            .catch(x => x)
 
         // Assert
-        o(results.errors.length).equals(2)("2 errors should exist")
-        o(results.errors[0].message).equals("'firstName' must be less than 5 characters.")
-        o(results.errors[1].message).equals("'id' must be 1 or greater. But was given '0'.")
+        o(results.messages.length).equals(2)("2 errors should exist")
+        o(results.messages[0].name).equals("First Name")
+        o(results.messages[0].message).equals("'First Name' must be less than 5 characters.")
+        o(results.messages[1].message).equals("'ID' must be 1 or greater. But was given '0'.")
+        o(results.messages[1].name).equals("ID")
     })
 
     o("returns resolved values when no error", async () => {
@@ -65,7 +69,7 @@ o.spec("validateObject", () => {
         const result = await validateObject(value, personValidator).catch(x => x)
 
         // Assert
-        o(result.errors[0].message).equals("Object is undefined.")
+        o(result.message).equals("Object is undefined.")
     })
 })
 

@@ -19,13 +19,13 @@ validator which will validate and transform your data to what you would like.
 
 ```typescript
 const nameValidator = {
-    firstName: createString25('firstName'),
-    lastName: maybe(createString25('lastName'))
+    firstName: createString25('First Name'),
+    lastName: maybe(createString25('Last Name'))
 }
 
 const personValidator = {
     ...name,
-    birthdate: createDate('birthdate')
+    birthdate: createDate('Birthdate')
 }
 ```
 
@@ -75,17 +75,17 @@ const failed = await validateObject(rawData, personValidator).catch(x => x)
 
 console.log(failed)
 /*
-AggregateError:
-    message: Validation Errors
-    errors:
+ValidationResult:
+    message: "<This will have a value if the object is null>"
+    messages:
         [
-            ValidationError:
+            ValidationMessage:
                 name: "firstName"
                 message: "'firstName' is undefined but is required."
-            ValidationError:
+            ValidationMessage:
                 name: "lastName"
                 message: "'lastName' is longer than 25."
-            ValidationError:
+            ValidationMessage:
                 name: "birthdate"
                 message: "'birthdate' is an invalid date."
 
@@ -114,31 +114,32 @@ So, how do we create the validation components?
 ```typescript
 // Note that validation checks for an instance of an `Error` to be added to the
 // list of failures. If it isn't an `Error` then it will be skipped.
-class ValidationError extends Error {
+class ValidationMessage {
     name: string
+    message: string
     constructor(name: string, message: string) {
-        super(`'${this.name}' ${this.message}`)
+        this.message = `'${this.name}' ${this.message}`
         this.name = name
     }
 }
 
 function fail(name: string, message: string) {
-    return Promise.reject(new ValidationError(name, message))
+    return Promise.reject(new ValidationMessage(name, message))
 }
 
-function required<T>(value: T, name: string) : Promise<T> {
+function required<T>(name: string, value: T) : Promise<T> {
     return !value ? fail(name, `is required but is falsey.`) : Promise.resolve(value)
 }
 
-async function createString(value: string, length: number, name: string) {
-    const v = await required(value?.trim(), name)
+async function createString(name: string, value: string, length: number) {
+    const v = await required(name, value?.trim())
     return v.length <= length ? v : fail(name, `is longer than ${length} characters.`)
 }
 
 const createString25 =
     (name: string) =>
     (value: string | undefined) =>
-        createString(value, 25, name)
+        createString(name, value, 25)
 
 const maybe =
     <T>(f: (val: T | undefined) => Promise<T>) =>
@@ -148,8 +149,13 @@ const maybe =
 const createDate =
     (name: string) =>
     async (value: string | Date) => {
-        let v = await required(value, name)
-        if (v instanceof Date) return v
+        let v = await required(name, value)
+        if (v instanceof Date) {
+            if (isNaN(+v)) {
+                return fail(name, 'is not a valid date.')
+            }
+            return v
+        }
         let d = new Date(v)
         if (isNaN(+d)) {
             return fail(name, `is not a valid date.`)

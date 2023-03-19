@@ -1,21 +1,25 @@
-export class AggregateError extends Error {
-    errors: Error[]
-    constructor(errors: Error[], message: string) {
-        super(message)
-        this.errors = errors
+export class ValidationResult {
+    messages: any[]
+    message: string
+    constructor(messages: any[] | string) {
+        if (typeof messages === "string") {
+            this.messages = []
+            this.message = messages
+        } else {
+            this.messages = messages
+            this.message = ""
+        }
     }
 }
 
 export async function validate<T extends readonly unknown[] | readonly [unknown]>(promises: T):
     Promise<{ -readonly [P in keyof T]: T[P] extends PromiseLike<infer U> ? U : T[P] }> {
-    const result = await Promise.allSettled(<Error[]><unknown>promises)
-    const failed: Error[] = []
+    const result = await Promise.allSettled(<any[]><unknown>promises)
+    const failed: any[] = []
     for (const item of result)
-        item.status === "rejected"
-            && item.reason instanceof Error
-            && failed.push(item.reason)
+        item.status === "rejected" && failed.push(item.reason)
     if (failed.length > 0)
-        return Promise.reject(new AggregateError(failed, "Validation Errors"))
+        return Promise.reject(new ValidationResult(failed))
     return <any>result.map((x: any) => x.value)
 }
 
@@ -27,7 +31,7 @@ type Unwrap<T> =
 
 export async function validateObject<T extends { [Key in keyof T]: (value: any | undefined) => Promise<any> }>(original: any, validator: T) {
     if (!original) {
-        return Promise.reject(new AggregateError([new Error("Object is undefined.")], "Validation Errors"))
+        return Promise.reject(new ValidationResult("Object is undefined."))
     }
     let validatorKeys = Object.keys(validator)
     let validations = new Array(validatorKeys.length)

@@ -1,6 +1,7 @@
-export declare class AggregateError extends Error {
-    errors: Error[];
-    constructor(errors: Error[], message: string);
+export declare class ValidationResult {
+    messages: any[];
+    message: string;
+    constructor(messages: any[] | string);
 }
 export declare function validate<T extends readonly unknown[] | readonly [unknown]>(promises: T): Promise<{
     -readonly [P in keyof T]: T[P] extends PromiseLike<infer U> ? U : T[P];

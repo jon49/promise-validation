@@ -1,6 +1,6 @@
 {
   "name": "promise-validation",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Validation using async await for simplicity",
   "main": "index.js",
   "scripts": {

@@ -10,8 +10,8 @@ o.spec("validate", () => {
         ]).catch(x => x)
 
         // Assert
-        o(results.errors.length).equals(1)("One error should exist.")
-        o(results.errors[0].message).equals("Hello!")
+        o(results.messages.length).equals(1)("One error should exist.")
+        o(results.messages[0].message).equals("Hello!")
     })
 
     o("returns resolved values when no error", async () => {
