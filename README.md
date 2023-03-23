@@ -80,14 +80,14 @@ ValidationResult:
     messages:
         [
             ValidationMessage:
-                name: "firstName"
-                message: "'firstName' is undefined but is required."
+                name: "First Name"
+                message: "'First Name' is undefined but is required."
             ValidationMessage:
-                name: "lastName"
-                message: "'lastName' is longer than 25."
+                name: "Last Name"
+                message: "'Last Name' is longer than 25."
             ValidationMessage:
-                name: "birthdate"
-                message: "'birthdate' is an invalid date."
+                name: "Birthdate"
+                message: "'Birthdate' is an invalid date."
 
         ]
 */
