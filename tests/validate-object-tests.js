@@ -23,11 +23,13 @@ o.spec("validateObject", () => {
             .catch(x => x)
 
         // Assert
-        o(results.messages.length).equals(2)("2 errors should exist")
-        o(results.messages[0].name).equals("First Name")
-        o(results.messages[0].message).equals("'First Name' must be less than 5 characters.")
-        o(results.messages[1].message).equals("'ID' must be 1 or greater. But was given '0'.")
-        o(results.messages[1].name).equals("ID")
+        o(results.reasons.length).equals(2)("2 errors should exist")
+
+        o(results.reasons[0].key).equals("firstName")
+        o(results.reasons[0].reason).equals(`"First Name" must be less than 5 characters.`)
+
+        o(results.reasons[1].key).equals("id")
+        o(results.reasons[1].reason).equals(`"ID" must be 1 or greater. But was given '0'.`)
     })
 
     o("returns resolved values when no error", async () => {
@@ -69,7 +71,7 @@ o.spec("validateObject", () => {
         const result = await validateObject(value, personValidator).catch(x => x)
 
         // Assert
-        o(result.message).equals("Object is undefined.")
+        o(result.reason).equals("Object is undefined.")
     })
 })
 

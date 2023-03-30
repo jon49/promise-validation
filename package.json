@@ -1,8 +1,8 @@
 {
   "name": "promise-validation",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Validation using async await for simplicity",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "tsc --module commonjs --outDir temp && ospec && rm -rf ./temp && npm start",
     "start": "tsc --declaration"

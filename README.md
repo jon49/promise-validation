@@ -76,19 +76,18 @@ const failed = await validateObject(rawData, personValidator).catch(x => x)
 console.log(failed)
 /*
 ValidationResult:
-    message: "<This will have a value if the object is null>"
-    messages:
+    reason: "<This will have a value if the object is null>"
+    reasons:
         [
+            ValidationError:
+                key: "firstName"
+                reason: "'First Name' is undefined but is required."
             ValidationMessage:
-                name: "First Name"
-                message: "'First Name' is undefined but is required."
+                key: "lastName"
+                reason: "'Last Name' is longer than 25."
             ValidationMessage:
-                name: "Last Name"
-                message: "'Last Name' is longer than 25."
-            ValidationMessage:
-                name: "Birthdate"
-                message: "'Birthdate' is an invalid date."
-
+                key: "birthdate"
+                reason: "'Birthdate' is an invalid date."
         ]
 */
 ```
@@ -112,28 +111,17 @@ are.
 So, how do we create the validation components?
 
 ```typescript
-// Note that validation checks for an instance of an `Error` to be added to the
-// list of failures. If it isn't an `Error` then it will be skipped.
-class ValidationMessage {
-    name: string
-    message: string
-    constructor(name: string, message: string) {
-        this.message = `'${this.name}' ${this.message}`
-        this.name = name
-    }
-}
-
-function fail(name: string, message: string) {
-    return Promise.reject(new ValidationMessage(name, message))
+function fail(message: string) {
+    return Promise.reject(message)
 }
 
 function required<T>(name: string, value: T) : Promise<T> {
-    return !value ? fail(name, `is required but is falsey.`) : Promise.resolve(value)
+    return !value ? fail(`"${name}" is required but is falsey.`) : value
 }
 
 async function createString(name: string, value: string, length: number) {
     const v = await required(name, value?.trim())
-    return v.length <= length ? v : fail(name, `is longer than ${length} characters.`)
+    return v.length <= length ? v : fail(`${name} is longer than ${length} characters.`)
 }
 
 const createString25 =
@@ -152,7 +140,7 @@ const createDate =
         let v = await required(name, value)
         if (v instanceof Date) {
             if (isNaN(+v)) {
-                return fail(name, 'is not a valid date.')
+                return fail(`"${name}" is not a valid date.`)
             }
             return v
         }

@@ -1,5 +1,5 @@
 const o = require('ospec')
-const { validate } = require('../temp/index.js')
+const { validate, ValidationResult, ValidationError } = require('../temp/index.js')
 
 o.spec("validate", () => {
     o("catches error when resolved also passed through", async () => {
@@ -10,8 +10,11 @@ o.spec("validate", () => {
         ]).catch(x => x)
 
         // Assert
-        o(results.messages.length).equals(1)("One error should exist.")
-        o(results.messages[0].message).equals("Hello!")
+        o(results instanceof ValidationResult).equals(true)("Instance of ValidationResult")
+        o(results.reasons.length).equals(1)("One error should exist.")
+
+        o(results.reasons[0] instanceof ValidationError).equals(true)("Instance of ValidationError")
+        o(results.reasons[0].reason.message).equals("Hello!")
     })
 
     o("returns resolved values when no error", async () => {
