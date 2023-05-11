@@ -76,7 +76,6 @@ const failed = await validateObject(rawData, personValidator).catch(x => x)
 console.log(failed)
 /*
 ValidationResult:
-    reason: "<This will have a value if the object is null>"
     reasons:
         [
             ValidationError:
@@ -168,4 +167,10 @@ var results = validate(data)
 // OR if you want partial results
 var results = Promise.allSettled(data)
 ```
+
+## Change Log
+
+### 4.0.0
+
+- Removed `reason` field from `ValidationResult` class.
 
