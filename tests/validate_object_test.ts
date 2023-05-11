@@ -75,7 +75,7 @@ describe("validateObject", () => {
         const result = await validateObject(value, personValidator).catch(x => x)
 
         // Assert
-        assertEquals(result.reason, "Object is undefined.")
+        assertEquals(result.reasons[0].reason, "Object is undefined.")
     })
 })
 

@@ -1,10 +1,10 @@
 {
   "name": "promise-validation",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "description": "Validation using async await for simplicity",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "deno test",
+    "test": "deno test && npm run build",
     "start": "npx esbuild --watch --format=esm --outfile=lib/index.js ./src/index.ts",
     "build": "npx esbuild ./src/index.ts --format=esm  --outfile=lib/index.js"
   },

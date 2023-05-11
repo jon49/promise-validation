@@ -1,14 +1,7 @@
 export class ValidationResult {
     reasons: ValidationError[]
-    reason: string
-    constructor(reasons: ValidationError[] | string) {
-        if (typeof reasons === "string") {
-            this.reasons = []
-            this.reason = reasons
-        } else {
+    constructor(reasons: ValidationError[]) {
             this.reasons = reasons
-            this.reason = ""
-        }
     }
 }
 
@@ -48,7 +41,7 @@ type Unwrap<T> =
 
 export async function validateObject<T extends { [Key in keyof T]: (value: any | undefined) => Promise<any> }>(original: any, validator: T) {
     if (!original) {
-        return Promise.reject(new ValidationResult("Object is undefined."))
+        return Promise.reject(new ValidationResult([new ValidationError("Object is undefined.", -1)]))
     }
 
     let validatorKeys = Object.keys(validator)
