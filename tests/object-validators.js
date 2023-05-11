@@ -42,7 +42,7 @@ function createPositiveWholeNumber(name, val) {
     }
 }
 
-exports.createIdNumber = function createIdNumber(name) {
+export function createIdNumber(name) {
     return async (val) => {
         let wholeNumber = await createPositiveWholeNumber(name)(val)
         if (wholeNumber < 1) return reject(`"${name}" must be 1 or greater. But was given '${val}'.`)
@@ -50,12 +50,12 @@ exports.createIdNumber = function createIdNumber(name) {
     }
 }
 
-exports.maybe =
+export const maybe =
     f =>
     val =>
         val == null ? Promise.resolve(val) : f(val)
 
-exports.createString5 =
+export const createString5 =
     name =>
     val =>
         createString(name, 5, val)

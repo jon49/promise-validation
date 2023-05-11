@@ -4,8 +4,9 @@
   "description": "Validation using async await for simplicity",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "tsc --module commonjs --outDir temp && ospec && rm -rf ./temp && npm start",
-    "start": "tsc --declaration"
+    "test": "deno test",
+    "start": "npx esbuild --watch --format=esm --outfile=lib/index.js ./src/index.ts",
+    "build": "npx esbuild ./src/index.ts --format=esm  --outfile=lib/index.js"
   },
   "repository": {
     "type": "git",
@@ -31,9 +32,5 @@
   "bugs": {
     "url": "https://github.com/jon49/promise-validation/issues"
   },
-  "homepage": "https://github.com/jon49/promise-validation#readme",
-  "devDependencies": {
-    "ospec": "^4.2.0",
-    "typescript": "^5.0.2"
-  }
+  "homepage": "https://github.com/jon49/promise-validation#readme"
 }
