@@ -1,7 +1,6 @@
 export declare class ValidationResult {
     reasons: ValidationError[];
-    reason: string;
-    constructor(reasons: ValidationError[] | string);
+    constructor(reasons: ValidationError[]);
 }
 export declare class ValidationError {
     reason: any;
