@@ -3,6 +3,7 @@
   "version": "4.0.1",
   "description": "Validation using async await for simplicity",
   "main": "./lib/index.js",
+  "type": "module",
   "scripts": {
     "test": "deno test && npm run build",
     "start": "tsc --watch",
